@@ -1,0 +1,10 @@
+main {
+    width: 100%;
+    font-size: 20px;
+    font-family: Helvetica, sans-serif;
+}
+
+#main-div {
+    max-width: 1200px;
+    margin: auto;
+}

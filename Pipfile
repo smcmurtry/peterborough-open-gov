@@ -9,8 +9,11 @@ requests = "*"
 beautifulsoup4 = "*"
 python-dotenv = "*"
 pandas = "*"
+flask = "*"
+gunicorn = "*"
 
 [dev-packages]
+mypy = "*"
 
 [requires]
 python_version = "3.9"
