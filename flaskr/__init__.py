@@ -4,12 +4,24 @@ from flask import Flask, redirect, render_template, url_for
 import json
 from scraping.scraping import Meeting
 from typing import List, Dict
+from datetime import datetime
 
 load_dotenv()
 
 meeting_data: List[Meeting] = []
 with open("scraping/all_data_flat.json", "r") as f:
     meeting_data = json.load(f)
+
+def format_datetime(datetime_iso: str) -> str:
+    output_format = "%B %-d, %Y, %-I:%M %p"
+    dt = datetime.fromisoformat(datetime_iso)
+    return datetime.strftime(dt, output_format)
+
+try:
+    for meeting in meeting_data:
+        meeting["datetime_display"] = format_datetime(meeting["datetime_iso"])
+except:
+    print("error parsing and formating meeting iso datetimes")
 
 all_meeting_types: List[str] = []
 with open("scraping/data/all_meeting_types.json", "r") as f:

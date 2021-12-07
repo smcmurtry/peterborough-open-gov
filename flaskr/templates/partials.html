@@ -1,7 +1,7 @@
 {% macro meeting(meeting) -%}
     <div class="meeting">
         <h3 class="meeting-title">{{meeting.meeting_type}}</h3>
-        <div>{{meeting.datetime_iso}}</div>
+        <div>{{meeting.datetime_display}}</div>
         <div>{{meeting.location}}</div>
         {% if meeting.cancelled %}
             <div>Cancelled</div>
