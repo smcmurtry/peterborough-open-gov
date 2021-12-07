@@ -1,0 +1,27 @@
+{% macro meeting(meeting) -%}
+    <div class="meeting">
+        <h2>{{meeting.meeting_type}}</h2>
+        <div>{{meeting.datetime_iso}}</div>
+        <div>{{meeting.location}}</div>
+        {% if meeting.cancelled %}
+            <div>Cancelled</div>
+        {% endif %}
+        <div>
+            {% if meeting.agenda_url %}
+                <a href="{{meeting.agenda_url}}">Agenda</a>
+            {% endif %}
+
+            {% if meeting.minutes_html_url %}
+                <a href="{{meeting.minutes_html_url}}">Minutes (HTML)</a>
+            {% endif %}
+            
+            {% if meeting.minutes_pdf_url %}
+                <a href="{{meeting.minutes_pdf_url}}">Minutes (PDF)</a>
+            {% endif %}
+            
+            {% if meeting.video_url %}
+                <a href="{{meeting.video_url}}">Video</a>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}

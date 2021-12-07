@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% import 'partials.html' as partials %}
+
+{% block content %}
+    <h2>Meetings</h2>
+    {% for meeting in meeting_data %}
+        {{ partials.meeting(meeting) }} 
+    {% endfor %}
+
+{% endblock %}
