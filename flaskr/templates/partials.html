@@ -1,5 +1,9 @@
+{% macro link(href, text) %}
+    <a href="{{href}}" class="text-blue-700 hover:underline">{{text}}</a>
+{% endmacro %}
+
 {% macro meeting(meeting) -%}
-    <div class="meeting">
+    <div class="meeting mb-2">
         <h3 class="meeting-title">{{meeting.meeting_type}}</h3>
         <div>{{meeting.datetime_display}}</div>
         <div>{{meeting.location}}</div>
@@ -8,19 +12,19 @@
         {% endif %}
         <div>
             {% if meeting.agenda_url %}
-                <a href="{{meeting.agenda_url}}">Agenda</a>
+                {{link(meeting.agenda_url, "Agenda")}}
             {% endif %}
 
             {% if meeting.minutes_html_url %}
-                <a href="{{meeting.minutes_html_url}}">Minutes (HTML)</a>
+                {{link(meeting.minutes_html_url, "Minutes (HTML)")}}
             {% endif %}
             
             {% if meeting.minutes_pdf_url %}
-                <a href="{{meeting.minutes_pdf_url}}">Minutes (PDF)</a>
+                {{link(meeting.minutes_pdf_url, "Minutes (PDF)")}}
             {% endif %}
             
             {% if meeting.video_url %}
-                <a href="{{meeting.video_url}}">Video</a>
+                {{link(meeting.video_url, "Video")}}
             {% endif %}
         </div>
     </div>

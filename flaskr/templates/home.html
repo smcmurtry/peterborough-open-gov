@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% import 'partials.html' as partials %}
 
 {% block content %}
     <h2>Meeting Types</h2>
     <ul>
     {% for meeting_type in all_meeting_types %}
         <li>
-            <a href="/meetings/{{meeting_type}}">{{ meeting_type }}</a>
+            {{partials.link("/meetings/" +meeting_type, meeting_type)}}
         </li>
     {% endfor %}
     </ul>

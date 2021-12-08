@@ -2,12 +2,13 @@
 <head>
   <meta name="description" content="Peterborough Open Government">
   <title>Peterborough Open Government</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}"> -->
+<link rel="stylesheet" href="{{ url_for('static', filename='tailwind.css') }}">
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <main>
   <div id="main-div">
-    <h1>Peterborough Open Government</h1>
+    <h1 class="text-3xl mb-4">Peterborough Open Government</h1>
     <section class="content">
         {% block content %}{% endblock %}
       </section>
