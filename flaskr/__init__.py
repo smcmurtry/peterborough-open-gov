@@ -29,8 +29,8 @@ with open("scraping/data/all_meeting_types.json", "r") as f:
 
 meeting_data_dict: Dict[str, List] = {}
 for meeting_type in all_meeting_types:
-    meeting_data_dict[meeting_type] = [x for x in meeting_data if x["meeting_type"] == meeting_type]
-
+    meetings_of_type = [x for x in meeting_data if x["meeting_type"] == meeting_type]
+    meeting_data_dict[meeting_type] = sorted(meetings_of_type, key=lambda x: x["datetime_iso"], reverse=True)
 
 def create_app(test_config=None):
     # create and configure the app
