@@ -2,9 +2,9 @@
 {% import 'partials.html' as partials %}
 
 {% block content %}
-    <h2 class="text-xl mb-4">Meetings</h2>
+    {{ partials.title_h2(meeting_type) }}
     {% for meeting in meeting_data %}
-        {{ partials.meeting(meeting) }} 
+        {{ partials.meeting(meeting, display_type=False) }} 
     {% endfor %}
 
 {% endblock %}

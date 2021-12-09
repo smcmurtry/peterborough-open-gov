@@ -45,8 +45,11 @@ def create_app(test_config=None):
     def meetings(meeting_type):
         if meeting_type not in meeting_data_dict:
             return render_template("404.html")
-        variables = {"meeting_data": meeting_data_dict[meeting_type]}
+        variables = {"meeting_data": meeting_data_dict[meeting_type], "meeting_type": meeting_type}
         return render_template('meeting_list.html', **variables)
 
+    @app.route('/about')
+    def about():
+        return render_template('about.html')
 
     return app

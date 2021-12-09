@@ -2,7 +2,7 @@
 {% import 'partials.html' as partials %}
 
 {% block content %}
-    <h2>Meeting Types</h2>
+    {{ partials.title_h2("Meeting Types") }}
     <ul>
     {% for meeting_type in all_meeting_types %}
         <li>

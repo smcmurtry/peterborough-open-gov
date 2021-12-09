@@ -2,29 +2,45 @@
     <a href="{{href}}" class="text-blue-700 hover:underline">{{text}}</a>
 {% endmacro %}
 
-{% macro meeting(meeting) -%}
+{% macro title_h2(text) %}
+    <h2 class="text-xl my-2">{{text}}</h2>
+{% endmacro %}
+
+
+{% macro meeting(meeting, display_type=True) -%}
     <div class="meeting mb-2">
-        <h3 class="meeting-title">{{meeting.meeting_type}}</h3>
-        <div>{{meeting.datetime_display}}</div>
-        <div>{{meeting.location}}</div>
-        {% if meeting.cancelled %}
-            <div>Cancelled</div>
+        {% if display_type %}
+            <h3 class="meeting-title">
+                {{meeting.meeting_type}}
+                {% if meeting.cancelled %}
+                    <span class="text-red-700">(Cancelled)</span>
+                {% endif %}
+            </h3>
+            <div>{{meeting.datetime_display}}</div>
+        {% else %}
+            <h3 class="meeting-title">
+                {{meeting.datetime_display}}
+                {% if meeting.cancelled %}
+                    <span class="text-red-700">(Cancelled)</span>
+                {% endif %}
+            </h3>
         {% endif %}
+        <div class="text-gray-600">{{meeting.location}}</div>
         <div>
             {% if meeting.agenda_url %}
                 {{link(meeting.agenda_url, "Agenda")}}
             {% endif %}
 
             {% if meeting.minutes_html_url %}
-                {{link(meeting.minutes_html_url, "Minutes (HTML)")}}
+                | {{link(meeting.minutes_html_url, "Minutes (HTML)")}}
             {% endif %}
             
             {% if meeting.minutes_pdf_url %}
-                {{link(meeting.minutes_pdf_url, "Minutes (PDF)")}}
+                | {{link(meeting.minutes_pdf_url, "Minutes (PDF)")}}
             {% endif %}
             
             {% if meeting.video_url %}
-                {{link(meeting.video_url, "Video")}}
+                | {{link(meeting.video_url, "Video")}}
             {% endif %}
         </div>
     </div>
