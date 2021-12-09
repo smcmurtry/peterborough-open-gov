@@ -2,6 +2,13 @@
     <a href="{{href}}" class="text-blue-700 hover:underline">{{text}}</a>
 {% endmacro %}
 
+{% macro external_link(href, text) %}
+    <a href="{{href}}" class="text-blue-700">
+        <span class="hover:underline">{{text}}</span>
+        <img src="{{ url_for('static', filename='assets/external_link.svg') }}" class="inline h-3" />
+    </a>
+{% endmacro %}
+
 {% macro title_h2(text) %}
     <h2 class="text-xl my-2">{{text}}</h2>
 {% endmacro %}
@@ -11,7 +18,7 @@
     <div class="meeting mb-2">
         {% if display_type %}
             <h3 class="meeting-title">
-                {{meeting.meeting_type}}
+                {{ link("/meeting/" + meeting.id, meeting.meeting_type)}}
                 {% if meeting.cancelled %}
                     <span class="text-red-700">(Cancelled)</span>
                 {% endif %}
@@ -19,7 +26,7 @@
             <div>{{meeting.datetime_display}}</div>
         {% else %}
             <h3 class="meeting-title">
-                {{meeting.datetime_display}}
+                {{ link("/meeting/" + meeting.id, meeting.datetime_display)}}
                 {% if meeting.cancelled %}
                     <span class="text-red-700">(Cancelled)</span>
                 {% endif %}
@@ -28,19 +35,19 @@
         <div class="text-gray-600">{{meeting.location}}</div>
         <div>
             {% if meeting.agenda_url %}
-                {{link(meeting.agenda_url, "Agenda")}}
+                {{external_link(meeting.agenda_url, "Agenda")}}
             {% endif %}
 
             {% if meeting.minutes_html_url %}
-                | {{link(meeting.minutes_html_url, "Minutes (HTML)")}}
+                | {{external_link(meeting.minutes_html_url, "Minutes (HTML)")}}
             {% endif %}
             
             {% if meeting.minutes_pdf_url %}
-                | {{link(meeting.minutes_pdf_url, "Minutes (PDF)")}}
+                | {{external_link(meeting.minutes_pdf_url, "Minutes (PDF)")}}
             {% endif %}
             
             {% if meeting.video_url %}
-                | {{link(meeting.video_url, "Video")}}
+                | {{external_link(meeting.video_url, "Video")}}
             {% endif %}
         </div>
     </div>

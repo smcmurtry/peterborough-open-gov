@@ -11,6 +11,7 @@ python-dotenv = "*"
 pandas = "*"
 flask = "*"
 gunicorn = "*"
+textract = "*"
 
 [dev-packages]
 mypy = "*"

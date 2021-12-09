@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% import 'partials.html' as partials %}
+
+{% block content %}
+    {{ partials.title_h2(meeting.meeting_type) }}
+    <div>Date: {{meeting.datetime_display}}</div>
+    <div>Location: {{meeting.location}}</div>
+
+
+{% endblock %}

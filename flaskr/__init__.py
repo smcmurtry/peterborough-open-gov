@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from flask import Flask, redirect, render_template, url_for
 import json
 from scraping.scraping import Meeting
-from typing import List, Dict
+from typing import Any, List, Dict
 from datetime import datetime
 
 load_dotenv()
@@ -17,9 +17,11 @@ def format_datetime(datetime_iso: str) -> str:
     dt = datetime.fromisoformat(datetime_iso)
     return datetime.strftime(dt, output_format)
 
+meeting_id_dict: Dict[str, Any] = {}
 try:
     for meeting in meeting_data:
         meeting["datetime_display"] = format_datetime(meeting["datetime_iso"])
+        meeting_id_dict[meeting["id"]] = meeting
 except:
     print("error parsing and formating meeting iso datetimes")
 
@@ -51,5 +53,11 @@ def create_app(test_config=None):
     @app.route('/about')
     def about():
         return render_template('about.html')
+
+    @app.route('/meeting/<id>')
+    def meeting_page(id: str):
+        meeting = meeting_id_dict[id]
+        variables = {"meeting": meeting}
+        return render_template('meeting_page.html', **variables)
 
     return app
