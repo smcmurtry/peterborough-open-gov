@@ -6,5 +6,16 @@
     <div>Date: {{meeting.datetime_display}}</div>
     <div>Location: {{meeting.location}}</div>
 
+    <div>
+        {{ partials.link(url_for('static', filename='minutes/pdf/' + minutes_data.pdf_fname), "Minutes (PDF)") }}
+    </div>
+    <!-- <div>
+        {{ partials.link(url_for('static', filename='minutes/html/' + minutes_data.html_fname), "Minutes (HTML)") }}
+    </div> -->
+
+    <div class="border-t-4 mt-4">
+        {% include url_for("minutes_html", fname = minutes_data.html_fname ) %}
+    </div>
+    
 
 {% endblock %}

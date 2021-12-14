@@ -2,13 +2,13 @@ from dotenv import load_dotenv
 
 from flask import Flask, redirect, render_template, url_for
 import json
-from scraping.scraping import Meeting
+from scraping.my_types import MeetingFlat, MinutesData
 from typing import Any, List, Dict
 from datetime import datetime
 
 load_dotenv()
 
-meeting_data: List[Meeting] = []
+meeting_data: List[MeetingFlat] = []
 with open("scraping/all_data_flat.json", "r") as f:
     meeting_data = json.load(f)
 
@@ -28,6 +28,10 @@ except:
 all_meeting_types: List[str] = []
 with open("scraping/data/all_meeting_types.json", "r") as f:
     all_meeting_types = json.load(f)
+
+minutes_dict: Dict[str, MinutesData] = {}
+with open("scraping/minutes_dict.json", "r") as f:
+    minutes_dict = json.load(f)
 
 meeting_data_dict: Dict[str, List] = {}
 for meeting_type in all_meeting_types:
@@ -58,6 +62,12 @@ def create_app(test_config=None):
     def meeting_page(id: str):
         meeting = meeting_id_dict[id]
         variables = {"meeting": meeting}
+        if id in minutes_dict:
+            variables["minutes_data"] = minutes_dict[id]
         return render_template('meeting_page.html', **variables)
+
+    @app.route('/minutes/html/<fname>')
+    def minutes_html(fname: str):
+        return render_template(f'minutes/html/{fname}')
 
     return app
