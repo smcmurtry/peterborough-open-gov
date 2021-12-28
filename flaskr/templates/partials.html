@@ -15,7 +15,7 @@
 
 
 {% macro meeting(meeting, display_type=True) -%}
-    <div class="meeting mb-2">
+    <div class="meeting">
         {% if display_type %}
             <h3 class="meeting-title">
                 {{ link("/meeting/" + meeting.id, meeting.meeting_type)}}
@@ -32,23 +32,5 @@
                 {% endif %}
             </h3>
         {% endif %}
-        <div class="text-gray-600">{{meeting.location}}</div>
-        <div>
-            {% if meeting.agenda_url %}
-                {{external_link(meeting.agenda_url, "Agenda")}}
-            {% endif %}
-
-            {% if meeting.minutes_html_url %}
-                | {{external_link(meeting.minutes_html_url, "Minutes (HTML)")}}
-            {% endif %}
-            
-            {% if meeting.minutes_pdf_url %}
-                | {{external_link(meeting.minutes_pdf_url, "Minutes (PDF)")}}
-            {% endif %}
-            
-            {% if meeting.video_url %}
-                | {{external_link(meeting.video_url, "Video")}}
-            {% endif %}
-        </div>
     </div>
 {% endmacro %}

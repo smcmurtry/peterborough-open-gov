@@ -2,7 +2,11 @@
 
 ## Setup
 
-Install [`pipenv`](https://pypi.org/project/pipenv/).
+Install [`pipenv`](https://pypi.org/project/pipenv/). On MacOS:
+```sh
+brew install pipenv
+```
+
 
 ```sh
 # cd into project folder

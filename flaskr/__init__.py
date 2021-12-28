@@ -62,8 +62,12 @@ def create_app(test_config=None):
     def meeting_page(id: str):
         meeting = meeting_id_dict[id]
         variables = {"meeting": meeting}
+        placeholder: MinutesData = {"pdf_filename": ""}
         if id in minutes_dict:
             variables["minutes_data"] = minutes_dict[id]
+        else:
+            variables["minutes_data"] = placeholder
+
         return render_template('meeting_page.html', **variables)
 
     @app.route('/minutes/html/<fname>')
