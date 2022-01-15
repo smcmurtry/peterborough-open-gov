@@ -25,3 +25,8 @@ pipenv install --dev # install dev packages and default
 ```
 
 Start the jupyter notebook server: `jupyter lab`
+
+To start the webserver:
+```sh
+./start.sh
+```
