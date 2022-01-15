@@ -1,5 +1,6 @@
 import textract
 from typing import List
+import os
 
 # if we are in the 1st 80ish lines, or until we see a line containing "roll call" or "called to order" (whichever comes first)
 # we consider "\n" a line break, after that we consider "\n\n" a line break
@@ -37,7 +38,7 @@ def html_format(line: str) -> str:
     return "<br>"
 
 
-def save_html_file(text: str, html_fname="sample_minutes.html") -> None:
+def save_output_file(text: str, html_fname="sample_minutes.html", format="html") -> None:
     lines = text.split("\n")
     header_index = get_header_index(lines)
     header_lines = lines[:header_index]
@@ -47,18 +48,50 @@ def save_html_file(text: str, html_fname="sample_minutes.html") -> None:
     body_p_list = get_list_of_ps_from_body_lines(body_lines)
     p_list = header_p_list + body_p_list
 
-    html_lines = [html_format(line) for line in p_list]
-    html_file = "\n".join(html_lines)
+    output_lines = []
+    if format == "html":
+        output_lines = [html_format(line) for line in p_list]
+    elif format == "text":
+        output_lines = [line for line in p_list]
+
+    output_file = "\n".join(output_lines)
 
     with open(html_fname, "w") as f:
-        f.write("<!doctype html>")
-        f.write("<div>")
-        f.write(html_file)
-        f.write("</div>")
+        if format == "html":
+            f.write("<!doctype html>")
+            f.write("<div>")
+            f.write(output_file)
+            f.write("</div>")
+        elif format == "text":
+            f.write(output_file)
 
 
 def convert_to_html(pdf_fname = "sample_minutes.pdf") -> None:
     binary_text = textract.process(pdf_fname)
     html_fname = pdf_fname.split(".")[0] + ".html"
     text = binary_text.decode("utf-8")
-    save_html_file(text, html_fname)
+    save_output_file(text, html_fname, format)
+
+
+def convert_to_text(pdf_fname="sample_minutes.txt") -> None:
+    binary_text = textract.process(pdf_fname)
+    txt_fname = pdf_fname.split(".")[0] + ".txt"
+    text = binary_text.decode("utf-8")
+    save_output_file(text, txt_fname, format="text")
+
+
+def get_output_path(output_dir: str, pdf_fname: str, extension="html") -> str:
+    output_fname = pdf_fname.split(".")[0] + "." + extension
+    return output_dir + output_fname
+
+
+if __name__ == "__main__":
+    pdf_dir = "minutes/pdf/"
+    pdf_files = [x for x in os.listdir(pdf_dir) if ".pdf" in x]
+
+    output_dir = "minutes/txt/"
+    for n, pdf_fname in enumerate(pdf_files):
+        print(n, end=", ")
+        pdf_path = pdf_dir + pdf_fname
+        output_path = get_output_path(output_dir, pdf_fname, "txt")
+        convert_to_text(pdf_path, output_path)
