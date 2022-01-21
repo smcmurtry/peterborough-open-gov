@@ -12,6 +12,7 @@ pandas = "*"
 flask = "*"
 gunicorn = "*"
 textract = "*"
+lunr = "*"
 
 [dev-packages]
 mypy = "*"
