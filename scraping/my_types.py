@@ -1,5 +1,6 @@
 from typing import List, TypedDict
 
+
 class Link(TypedDict):
     aria_label: str
     link_text: str
@@ -12,6 +13,7 @@ class Meeting(TypedDict):
     meeting_type: str
     location: str
     links: List[Link]
+
 
 class MeetingFlat(TypedDict):
     id: str

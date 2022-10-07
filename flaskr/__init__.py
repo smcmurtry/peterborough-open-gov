@@ -12,10 +12,12 @@ meeting_data: List[MeetingFlat] = []
 with open("scraping/all_data_flat.json", "r") as f:
     meeting_data = json.load(f)
 
+
 def format_datetime(datetime_iso: str) -> str:
     output_format = "%B %-d, %Y, %-I:%M %p"
     dt = datetime.fromisoformat(datetime_iso)
     return datetime.strftime(dt, output_format)
+
 
 meeting_id_dict: Dict[str, Any] = {}
 try:
@@ -36,29 +38,35 @@ with open("scraping/minutes_dict.json", "r") as f:
 meeting_data_dict: Dict[str, List] = {}
 for meeting_type in all_meeting_types:
     meetings_of_type = [x for x in meeting_data if x["meeting_type"] == meeting_type]
-    meeting_data_dict[meeting_type] = sorted(meetings_of_type, key=lambda x: x["datetime_iso"], reverse=True)
+    meeting_data_dict[meeting_type] = sorted(
+        meetings_of_type, key=lambda x: x["datetime_iso"], reverse=True
+    )
+
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
 
-    @app.route('/')
+    @app.route("/")
     def home():
         variables = {"all_meeting_types": all_meeting_types}
-        return render_template('home.html', **variables)
+        return render_template("home.html", **variables)
 
-    @app.route('/meetings/<meeting_type>', methods = ['GET'])
+    @app.route("/meetings/<meeting_type>", methods=["GET"])
     def meetings(meeting_type):
         if meeting_type not in meeting_data_dict:
             return render_template("404.html")
-        variables = {"meeting_data": meeting_data_dict[meeting_type], "meeting_type": meeting_type}
-        return render_template('meeting_list.html', **variables)
+        variables = {
+            "meeting_data": meeting_data_dict[meeting_type],
+            "meeting_type": meeting_type,
+        }
+        return render_template("meeting_list.html", **variables)
 
-    @app.route('/about')
+    @app.route("/about")
     def about():
-        return render_template('about.html')
+        return render_template("about.html")
 
-    @app.route('/meeting/<id>')
+    @app.route("/meeting/<id>")
     def meeting_page(id: str):
         meeting = meeting_id_dict[id]
         variables = {"meeting": meeting}
@@ -68,10 +76,10 @@ def create_app(test_config=None):
         else:
             variables["minutes_data"] = placeholder
 
-        return render_template('meeting_page.html', **variables)
+        return render_template("meeting_page.html", **variables)
 
-    @app.route('/minutes/html/<fname>')
+    @app.route("/minutes/html/<fname>")
     def minutes_html(fname: str):
-        return render_template(f'minutes/html/{fname}')
+        return render_template(f"minutes/html/{fname}")
 
     return app

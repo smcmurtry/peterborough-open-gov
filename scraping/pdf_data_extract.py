@@ -4,12 +4,13 @@ from typing import List
 import os
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--pdf_dir', '-pdf', help="pdf directory", type= str)
-parser.add_argument('--txt_dir', '-txt', help="txt directory", type= str)
+parser.add_argument("--pdf_dir", "-pdf", help="pdf directory", type=str)
+parser.add_argument("--txt_dir", "-txt", help="txt directory", type=str)
 
 # if we are in the 1st 80ish lines, or until we see a line containing "roll call" or "called to order" (whichever comes first)
 # we consider "\n" a line break, after that we consider "\n\n" a line break
 # let's try just with "\n\n" and see what that looks like
+
 
 def get_header_index(_lines: List[str]) -> int:
     max_header_index = 100
@@ -43,7 +44,9 @@ def html_format(line: str) -> str:
     return "<br>"
 
 
-def save_output_file(text: str, output_fname="sample_minutes.html", file_format="html") -> None:
+def save_output_file(
+    text: str, output_fname="sample_minutes.html", file_format="html"
+) -> None:
     lines = text.split("\n")
     header_index = get_header_index(lines)
     header_lines = lines[:header_index]
