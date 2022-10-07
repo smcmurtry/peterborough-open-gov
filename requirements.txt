@@ -1,0 +1,13 @@
+jupyterlab
+requests
+beautifulsoup4
+python-dotenv
+pandas
+flask
+gunicorn
+textract
+lunr
+
+mypy
+
+# python_version = "3.9"
