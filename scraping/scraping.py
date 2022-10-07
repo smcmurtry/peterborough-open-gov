@@ -85,11 +85,14 @@ def run():
     meeting_type_hrefs = [x.attrs["href"] for x in meeting_type_anchors]
 
     parsed_meetings: List[Meeting] = []
-    for n, href in enumerate(meeting_type_hrefs[10:]):
-        n = n + 10
+    for n, href in enumerate(meeting_type_hrefs[:]):
         print(f"{n} of {len(meeting_type_hrefs)}")
         meeting_type_page = requests.post(href)
         parsed_meetings_of_type = parse_meeting_page_text(meeting_type_page.text)
         parsed_meetings += parsed_meetings_of_type
         with open(f"data/part_{n}.json", "w") as f:
             json.dump(parsed_meetings_of_type, f)
+
+
+if __name__ == "__main__":
+    run()
