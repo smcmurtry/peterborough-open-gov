@@ -78,6 +78,16 @@ def parse_meeting_page_text(meeting_page_text) -> List[Meeting]:
     return parsed_meetings
 
 
+def parse_playwright_output(playwright_output) -> List[Meeting]:
+    soup = BeautifulSoup(playwright_output, "html.parser")
+    all_meetings_of_type_2021 = soup.find_all("div", {"class": "meeting-header"})
+    parsed_meetings = []
+    for meeting_soup in all_meetings_of_type_2021:
+        meeting = parse_meeting_soup(meeting_soup)
+        parsed_meetings.append(meeting)
+    return parsed_meetings
+
+
 def run():
     meetings_page = requests.get(meetings_url)
     soup = BeautifulSoup(meetings_page.text, "html.parser")
@@ -94,5 +104,13 @@ def run():
             json.dump(parsed_meetings_of_type, f)
 
 
+def playwright_run():
+    with open("../playwright/output/output.txt", "r") as f_in:
+        html = f_in.read()
+        meeting_list = parse_playwright_output(html)
+        with open(f"playwright_data.json", "w") as f_out:
+            json.dump(meeting_list, f_out)
+
+
 if __name__ == "__main__":
-    run()
+    playwright_run()
