@@ -14,6 +14,8 @@ from urllib.parse import urlparse
 from urllib.parse import parse_qs
 from urllib import parse
 
+import scraping
+
 
 def compile_data():
     contents = os.listdir("data")
@@ -70,9 +72,16 @@ def get_id(url: str) -> str:
     return query_dict["Id"][0]
 
 
+def get_agenda_url(x):
+    try:
+        return x[0]["url"]
+    except:
+        return ""
+
+
 def assemble_dataframe_and_save(all_data):
     df = pd.DataFrame.from_dict(all_data)
-    df["agenda_url"] = df["links"].map(lambda x: x[0]["url"])
+    df["agenda_url"] = df["links"].map(get_agenda_url)
     df["minutes_html_url"] = df["links"].map(lambda x: get_minues_url(x, "html"))
     df["minutes_pdf_url"] = df["links"].map(lambda x: get_minues_url(x, "pdf"))
     df["cancelled"] = df["links"].map(is_cancelled)
@@ -89,15 +98,15 @@ def assemble_dataframe_and_save(all_data):
         "cancelled",
         "video_url",
     ]
-    df[cols_of_interest].to_json("all_data_flat.json", orient="records")
+    df[cols_of_interest].to_json("generated_data/all_data_flat.json", orient="records")
 
     all_meeting_types = list(set(df["meeting_type"]))
-    with open("data/all_meeting_types.json", "w") as f:
+    with open("generated_data/all_meeting_types.json", "w") as f:
         json.dump(all_meeting_types, f)
 
 
 def load_all_data_flat():
-    with open("all_data_flat.json", "r") as f:
+    with open("generated_data/all_data_flat.json", "r") as f:
         all_data_flat = json.load(f)
     return all_data_flat
 
@@ -124,26 +133,35 @@ def get_doc_id(url: str) -> str:
     return doc_id
 
 
-def save_pdf_locally(url: str):
-    resp = requests.get(url)
+def save_pdf_locally(url: str, overwrite=False):
     doc_id = get_doc_id(url)
-    with open(f"minutes/{doc_id}.pdf", "wb") as f:
+    fname = f"minutes/{doc_id}.pdf"
+    if not overwrite:
+        os.path.isfile(fname)
+        return
+    resp = requests.get(url)
+    with open(fname, "wb") as f:
         f.write(resp.content)
 
 
-def main():
-    all_data = compile_data()
+def main(playwright=True):
+    if not playwright:
+        all_data = compile_data()
+    else:
+        with open("../playwright/output/output.txt", "r") as f:
+            html = f.read()
+            all_data = scraping.parse_playwright_output(html)
     assemble_dataframe_and_save(all_data)
     all_data_flat = load_all_data_flat()
 
-    with open("scraped_minutes_urls.csv", "w") as f:
+    with open("generated_data/scraped_minutes_urls.csv", "w") as f:
         f.write("id,minues_pdf_url\n")
         for n, meeting in enumerate(all_data_flat[:]):
             print(n)
             minutes_pdf_url = req_agenda_get_minutes_url(meeting["agenda_url"])
             f.write(f"{meeting['id']},{minutes_pdf_url}\n")
 
-    df_minutes = pd.read_csv("scraped_minutes_urls.csv")
+    df_minutes = pd.read_csv("generated_data/scraped_minutes_urls.csv")
     records = list(df_minutes.to_records(index=False))
 
     for n, record in enumerate(records[:]):
@@ -171,7 +189,7 @@ def main():
         }
         minutes_dict[meeting_id] = minutes_data
 
-    json.dump(minutes_dict, open("minutes_dict.json", "w"))
+    json.dump(minutes_dict, open("generated_data/minutes_dict.json", "w"))
 
 
 if __name__ == "__main__":
