@@ -8,7 +8,7 @@ function delay(time) {
 }
 
 var logger = fs.createWriteStream('output/output.txt', {
-    flags: 'a' // 'a' means appending (old data will be preserved)
+    // flags: 'a' // 'a' means appending (old data will be preserved)
 })
 
 test('test', async ({ page }) => {
@@ -20,12 +20,17 @@ test('test', async ({ page }) => {
     var accordianCount = await accordians.count();
     console.log("accordianCount", accordianCount)
     for (let i = 0; i < accordianCount; i++) {
-        // for (let i = 0; i < 3; i++) {
         console.log("i=", i)
+        var accordian = accordians.nth(i)
+        await accordian.click({ "trial": true })
         accordians.nth(i).click();
         await delay(20000)
+        var logger = fs.createWriteStream('output/output.txt', {
+            flags: 'w' // 'a' means appending (old data will be preserved)
+        })
+        // write and overwrite the file so we don't lose all data if the scraper crashes
+        var pastMeetingHtml = await pastMeetingLocator.innerHTML()
+        logger.write(pastMeetingHtml);
     }
 
-    var pastMeetingHtml = await pastMeetingLocator.innerHTML()
-    logger.write(pastMeetingHtml);
 });
