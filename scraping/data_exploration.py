@@ -112,6 +112,11 @@ def load_all_data_flat():
 
 
 def get_minutes_url_from_page(agenda_text: str) -> str:
+    """
+    I need to fix this. The minutes linked on this page do not belong to the meeting with this agenda.
+    They belong to an previous meeting of the same type (is this always true?). The date of this meeting
+    is in the link text to the minutes.
+    """
     soup = BeautifulSoup(agenda_text, "html.parser")
     attachment_divs = soup.find_all("div", attrs={"class": "AgendaItemAttachment"})
     for attachment in attachment_divs:
@@ -121,10 +126,31 @@ def get_minutes_url_from_page(agenda_text: str) -> str:
             return "https://pub-peterborough.escribemeetings.com/" + href
 
 
-def req_agenda_get_minutes_url(agenda_url: str) -> str:
+def get_fname(datetime_iso, meeting_type):
+    """
+    datetime_iso like: "2022-10-03T16:00:00" ",
+    meeting_type like: "Accessibility Advisory Committee Meeting"
+    """
+    date = datetime_iso.split("T")[0]
+    meeting_type = meeting_type.replace(" ", "-")
+    # meeting_type = meeting_type.replace(",","")
+    return f"{date}.{meeting_type}"
+
+
+def save_agenda(meeting, overwrite=False) -> None:
+    """
+    Do not request if we already have it saved.
+    """
+    fname = get_fname(meeting["datetime_iso"], meeting["meeting_type"])
+    fpath = f"agenda/{fname}.html"
+    # check if file exists
+    if not overwrite and os.path.isfile(fpath):
+        return
+    resp = requests.get(meeting["agenda_url"])
+    with open(fpath, "w") as f:
+        f.write(resp.text)
     time.sleep(2)
-    resp = requests.get(agenda_url)
-    return get_minutes_url_from_page(resp.text)
+    return
 
 
 def get_doc_id(url: str) -> str:
@@ -133,15 +159,17 @@ def get_doc_id(url: str) -> str:
     return doc_id
 
 
-def save_pdf_locally(url: str, overwrite=False):
-    doc_id = get_doc_id(url)
-    fname = f"minutes/{doc_id}.pdf"
-    if not overwrite:
-        os.path.isfile(fname)
+def save_pdf_locally(url: str, meeting, overwrite=False):
+    # doc_id = get_doc_id(url)
+    fname = get_fname(meeting["datetime_iso"], meeting["meeting_type"])
+    fpath = f"minutes/{fname}.pdf"
+    if not overwrite and os.path.isfile(fpath):
         return
     resp = requests.get(url)
-    with open(fname, "wb") as f:
+    with open(fpath, "wb") as f:
         f.write(resp.content)
+    time.sleep(2)
+    return
 
 
 def main(playwright=True):
@@ -154,42 +182,47 @@ def main(playwright=True):
     assemble_dataframe_and_save(all_data)
     all_data_flat = load_all_data_flat()
 
-    with open("generated_data/scraped_minutes_urls.csv", "w") as f:
-        f.write("id,minues_pdf_url\n")
-        for n, meeting in enumerate(all_data_flat[:]):
-            print(n)
-            minutes_pdf_url = req_agenda_get_minutes_url(meeting["agenda_url"])
-            f.write(f"{meeting['id']},{minutes_pdf_url}\n")
+    # with open("generated_data/scraped_minutes_urls.csv", "w") as f:
+    for n, meeting in enumerate(all_data_flat[:]):
+        print(
+            n,
+        )
+        save_agenda(meeting)
 
-    df_minutes = pd.read_csv("generated_data/scraped_minutes_urls.csv")
-    records = list(df_minutes.to_records(index=False))
+    # loop through stuff in agenda directory, download minutes that I don't have yet
 
-    for n, record in enumerate(records[:]):
-        print(n, end=", ")
-        url = record[1]
-        if not url or url == "None":
-            continue
-        save_pdf_locally(url)
-        time.sleep(2)
+    # minutes_pdf_url = req_agenda_get_minutes_url(meeting["agenda_url"])
+    # f.write(f"{meeting['id']},{minutes_pdf_url}\n")
 
-    minutes_dict: Dict[str, MinutesData] = {}
+    # df_minutes = pd.read_csv("generated_data/scraped_minutes_urls.csv")
+    # records = list(df_minutes.to_records(index=False))
 
-    for record in records:
-        meeting_id = record[0]
-        url = record[1]
-        if url == "None":
-            continue
-        doc_id = get_doc_id(url)
-        pdf_fname = f"{doc_id}.pdf"
-        html_fname = f"{doc_id}.html"
-        minutes_data: MinutesData = {
-            "pdf_fname": pdf_fname,
-            "html_fname": html_fname,
-            "url": url,
-        }
-        minutes_dict[meeting_id] = minutes_data
+    # for n, record in enumerate(records[:]):
+    #     print(n, end=", ")
+    #     url = record[1]
+    #     if not url or url == "None":
+    #         continue
+    #     save_pdf_locally(url)
+    #     time.sleep(2)
 
-    json.dump(minutes_dict, open("generated_data/minutes_dict.json", "w"))
+    # minutes_dict: Dict[str, MinutesData] = {}
+
+    # for record in records:
+    #     meeting_id = record[0]
+    #     url = record[1]
+    #     if url == "None":
+    #         continue
+    #     doc_id = get_doc_id(url)
+    #     pdf_fname = f"{doc_id}.pdf"
+    #     html_fname = f"{doc_id}.html"
+    #     minutes_data: MinutesData = {
+    #         "pdf_fname": pdf_fname,
+    #         "html_fname": html_fname,
+    #         "url": url,
+    #     }
+    #     minutes_dict[meeting_id] = minutes_data
+
+    # json.dump(minutes_dict, open("generated_data/minutes_dict.json", "w"))
 
 
 if __name__ == "__main__":
