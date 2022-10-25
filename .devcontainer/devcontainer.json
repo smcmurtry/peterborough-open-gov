@@ -1,5 +1,5 @@
 {
-	"name": "notification-admin",
+	"name": "peterborough-open-gov",
 	"build": {
 		"dockerfile": "Dockerfile",
 		"context": ".."
