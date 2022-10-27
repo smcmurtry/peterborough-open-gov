@@ -133,7 +133,7 @@ def get_fname(datetime_iso, meeting_type):
     """
     date = datetime_iso.split("T")[0]
     meeting_type = meeting_type.replace(" ", "-")
-    # meeting_type = meeting_type.replace(",","")
+    meeting_type = meeting_type.replace(",", "")
     return f"{date}.{meeting_type}"
 
 
@@ -170,6 +170,10 @@ def save_pdf_locally(url: str, meeting, overwrite=False):
         f.write(resp.content)
     time.sleep(2)
     return
+
+
+# def save_all_pdfs():
+#     fpath = f"minutes/{fname}.pdf"
 
 
 def main(playwright=True):
