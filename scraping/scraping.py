@@ -105,7 +105,7 @@ def run():
 
 
 def playwright_run():
-    with open("../playwright/output/output.txt", "r") as f_in:
+    with open("../playwright_output/output.txt", "r") as f_in:
         html = f_in.read()
         meeting_list = parse_playwright_output(html)
         with open(f"playwright_data.json", "w") as f_out:

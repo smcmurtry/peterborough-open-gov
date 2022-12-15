@@ -180,7 +180,7 @@ def main(playwright=True):
     if not playwright:
         all_data = compile_data()
     else:
-        with open("../playwright/output/output.txt", "r") as f:
+        with open("../playwright_output/output.txt", "r") as f:
             html = f.read()
             all_data = scraping.parse_playwright_output(html)
     assemble_dataframe_and_save(all_data)
