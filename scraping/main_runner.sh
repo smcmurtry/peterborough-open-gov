@@ -2,9 +2,7 @@
 
 python parse_scraped_data.py ../playwright_output/output.txt generated_data/all_data_flat.json
 
-python save_agendas |
-    --flat_data_fpath=generated_data/all_data_flat.json
-    --agenda_output_dir=agenda
+python save_agendas.py generated_data/all_data_flat.json agenda
 
 python download_minutes.py |
     --agenda_input_dir=agenda \
