@@ -70,9 +70,7 @@ def main(agenda_input_dir="scraping/agenda", minutes_output_dir="scraping/minute
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--agenda_input_dir", help="input directory containing agendas")
-    parser.add_argument("--minutes_output_dir", help="output directory containing minutes pdfs")
+    parser.add_argument("agenda_input_dir", help="input directory containing agendas")
+    parser.add_argument("minutes_output_dir", help="output directory containing minutes pdfs")
     args = parser.parse_args()
-    if not args.agenda_input_dir or not args.minutes_output_dir:
-        raise Exception("All args are required")
     main(agenda_input_dir=args.agenda_input_dir, minutes_output_dir=args.minutes_output_dir)
