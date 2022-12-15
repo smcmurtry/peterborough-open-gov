@@ -1,4 +1,4 @@
-import requests
+import argparse
 from bs4 import BeautifulSoup
 from datetime import datetime
 import json
@@ -88,13 +88,26 @@ def parse_playwright_output(playwright_output) -> List[Meeting]:
     return parsed_meetings
 
 
-def playwright_run():
-    with open("../playwright_output/output.txt", "r") as f_in:
+def main(
+        input_fpath: str = "../playwright_output/output.txt",
+        output_fpath: str = "generated_data/playwright_data.json"
+    ):
+    """
+    This takes the scraped playwright data as input and writes the meeting
+    data to file. The meeting data is of type: List[Meeting]
+    """
+    with open(input_fpath, "r") as f_in:
         html = f_in.read()
         meeting_list = parse_playwright_output(html)
-        with open(f"generated_data/playwright_data.json", "w") as f_out:
+        with open(output_fpath, "w") as f_out:
             json.dump(meeting_list, f_out)
 
 
 if __name__ == "__main__":
-    playwright_run()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input", help="input playwright file fpath")
+    parser.add_argument("--output", help="output data file fpath")
+    args = parser.parse_args()
+    if not args.input or not args.output:
+        raise Exception("Both input and output are required")
+    main(input_fpath=args.input, output_fpath=args.output)
