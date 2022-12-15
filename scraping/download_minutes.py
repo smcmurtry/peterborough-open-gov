@@ -27,8 +27,11 @@ def main(agenda_input_dir="scraping/agenda", minutes_output_dir="scraping/minute
             url = f"https://pub-peterborough.escribemeetings.com/{href}"
 
             if "minutes" in a.text.lower():
-                possible_date = a.text.split(" - ")[1].split(" ")[-1]
-                date = datetime.strptime(possible_date, "%m-%d-%Y")
+                try:
+                    possible_date = a.text.split(" - ")[1].split(" ")[-1]
+                    date = datetime.strptime(possible_date, "%m-%d-%Y")
+                except:
+                    continue
             else:
                 possible_date = a.text[:10]
                 if possible_date.count("-") != 2:
@@ -73,7 +76,7 @@ if __name__ == "__main__":
     parser.add_argument("--agenda_input_dir", help="input directory containing agendas")
     parser.add_argument("--minutes_output_dir", help="output directory containing minutes pdfs")
     args = parser.parse_args()
-    if not args.input_fpath or not args.output_fpath:
+    if not args.agenda_input_dir or not args.minutes_output_dir:
         raise Exception("All arguements are required")
 
     main(agenda_input_dir=args.agenda_input_dir, minutes_output_dir=args.minutes_output_dir)
