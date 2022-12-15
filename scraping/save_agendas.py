@@ -35,7 +35,9 @@ def main(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("flat_data_fpath", help="input fpath for all_data_flat.json")
-    parser.add_argument("agenda_output_dir", help="output directory for agendas")
+    parser.add_argument("--flat_data_fpath", help="input fpath for all_data_flat.json")
+    parser.add_argument("--agenda_output_dir", help="output directory for agendas")
     args = parser.parse_args()
+    if not args.flat_data_fpath or not args.agenda_output_dir:
+        raise Exception("All arguements are required")
     main(flat_data_fpath=args.flat_data_fpath, agenda_output_dir=args.agenda_output_dir)

@@ -179,7 +179,9 @@ def main(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("input_fpath", help="input playwright file fpath")
-    parser.add_argument("output_fpath", help="output all_data_flat.json fpath")
+    parser.add_argument("--input_fpath", help="input playwright file fpath")
+    parser.add_argument("--output_fpath", help="output all_data_flat.json fpath")
     args = parser.parse_args()
+    if not args.input_fpath or not args.output_fpath:
+        raise Exception("All arguements are required")
     main(input_fpath=args.input_fpath, output_fpath=args.output_fpath)

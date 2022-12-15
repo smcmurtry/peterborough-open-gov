@@ -48,12 +48,10 @@ def main(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--flat_data_fpath_input", help="fpath for all_data_flat.json")
-    parser.add_argument("--minutes_dir_input", help="directory to find minutes in")
-    parser.add_argument("--output_fpath", help="fpath for generated all_meeting_data.json")
+    parser.add_argument("flat_data_fpath_input", help="fpath for all_data_flat.json")
+    parser.add_argument("minutes_dir_input", help="directory to find minutes in")
+    parser.add_argument("output_fpath", help="fpath for generated all_meeting_data.json")
     args = parser.parse_args()
-    if not args.input or not args.output:
-        raise Exception("Both input and output are required")
 
     main(
         flat_data_fpath=args.flat_data_fpath_input,
