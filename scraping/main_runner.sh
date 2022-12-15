@@ -9,4 +9,12 @@ python generate_all_meeting_data.py |
     --minutes_dir=minutes_new \
     --output_fpath=generated_data/all_meeting_data.json
 
+python save_agendas |
+    --flat_data_fpath=generated_data/all_data_flat.json
+    --agenda_output_dir=agenda
+
+python download_minutes.py |
+    --agenda_input_dir=agenda \
+    --minutes_output_dir=minutes_new
+
 # need something to generate meeting_type_dict.json as well 
