@@ -88,27 +88,11 @@ def parse_playwright_output(playwright_output) -> List[Meeting]:
     return parsed_meetings
 
 
-def run():
-    meetings_page = requests.get(meetings_url)
-    soup = BeautifulSoup(meetings_page.text, "html.parser")
-    meeting_type_anchors = soup.find_all("a", {"class": "PastMeetingTypesName"})
-    meeting_type_hrefs = [x.attrs["href"] for x in meeting_type_anchors]
-
-    parsed_meetings: List[Meeting] = []
-    for n, href in enumerate(meeting_type_hrefs[:]):
-        print(f"{n} of {len(meeting_type_hrefs)}")
-        meeting_type_page = requests.post(href)
-        parsed_meetings_of_type = parse_meeting_page_text(meeting_type_page.text)
-        parsed_meetings += parsed_meetings_of_type
-        with open(f"data/part_{n}.json", "w") as f:
-            json.dump(parsed_meetings_of_type, f)
-
-
 def playwright_run():
     with open("../playwright_output/output.txt", "r") as f_in:
         html = f_in.read()
         meeting_list = parse_playwright_output(html)
-        with open(f"playwright_data.json", "w") as f_out:
+        with open(f"generated_data/playwright_data.json", "w") as f_out:
             json.dump(meeting_list, f_out)
 
 
