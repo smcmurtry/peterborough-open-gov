@@ -1,8 +1,6 @@
 #!/bin/bash
 
-python parse_scraped_data.py |
-    --input_fpath=../playwright_output/output.txt \
-    --output_fpath=generated_data/all_data_flat.json
+python parse_scraped_data.py ../playwright_output/output.txt generated_data/all_data_flat.json
 
 python save_agendas |
     --flat_data_fpath=generated_data/all_data_flat.json

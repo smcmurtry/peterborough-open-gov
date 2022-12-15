@@ -4,7 +4,7 @@ from datetime import datetime
 import json
 from urllib.parse import parse_qs
 from urllib import parse
-
+import pandas as pd
 from typing import List, TypedDict
 
 url = "https://www.peterborough.ca/en/city-hall/upcoming-and-past-agendas.aspx"
@@ -179,9 +179,7 @@ def main(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", help="input playwright file fpath")
-    parser.add_argument("--output", help="output all_data_flat.json fpath")
+    parser.add_argument("input_fpath", help="input playwright file fpath")
+    parser.add_argument("output_fpath", help="output all_data_flat.json fpath")
     args = parser.parse_args()
-    if not args.input or not args.output:
-        raise Exception("Both input and output are required")
-    main(input_fpath=args.input, output_fpath=args.output)
+    main(input_fpath=args.input_fpath, output_fpath=args.output_fpath)
