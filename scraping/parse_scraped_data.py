@@ -2,6 +2,8 @@ import argparse
 from bs4 import BeautifulSoup
 from datetime import datetime
 import json
+from urllib.parse import parse_qs
+from urllib import parse
 
 from typing import List, TypedDict
 
@@ -37,7 +39,7 @@ class Meeting(TypedDict):
 
 
 def parse_link_soup(link_soup) -> Link:
-    link: Link = {}
+    link: Link = {}  
     link["aria_label"] = link_soup.attrs["aria-label"]
     link["href"] = link_soup.attrs["href"]
     link["link_text"] = link_soup.text.strip()
@@ -88,9 +90,80 @@ def parse_playwright_output(playwright_output) -> List[Meeting]:
     return parsed_meetings
 
 
+def get_minutes_url(links, file_type="html"):
+    # if minutes is in aria_label.lower() then it is the minutes
+    # link text gives file type
+    "file_type in ['html', 'pdf']"
+    for x in links:
+        if "minutes" not in x["aria_label"].lower():
+            continue
+        if file_type == x["link_text"].lower():
+            return x["url"]
+        return ""
+    return ""
+
+
+def is_cancelled(links):
+    for x in links:
+        if "cancellation" in x["link_text"].lower():
+            return True
+    return False
+
+
+def get_video_url(links):
+    for x in links:
+        if x["link_text"].lower() == "video":
+            return x["url"]
+    return ""
+
+
+def get_id(url: str) -> str:
+    "Get the meeting id used by the external site"
+    query_dict = dict(parse.parse_qs(parse.urlsplit(url).query))
+    if "Id" not in query_dict:
+        # these seem to be urls for cancellation notices
+        # @todo: fix my scraping program since cancelled meetings should still have agendas
+        return "blah"
+    return query_dict["Id"][0]
+
+
+def get_agenda_url(x):
+    try:
+        return x[0]["url"]
+    except:
+        return ""
+
+
+def assemble_dataframe_and_save(all_data):
+    df = pd.DataFrame.from_dict(all_data)
+    df["agenda_url"] = df["links"].map(get_agenda_url)
+    df["minutes_html_url"] = df["links"].map(lambda x: get_minutes_url(x, "html"))
+    df["minutes_pdf_url"] = df["links"].map(lambda x: get_minutes_url(x, "pdf"))
+    df["cancelled"] = df["links"].map(is_cancelled)
+    df["video_url"] = df["links"].map(get_video_url)
+    df["id"] = df["agenda_url"].map(lambda url: get_id(url))
+    cols_of_interest = [
+        "id",
+        "meeting_type",
+        "location",
+        "datetime_iso",
+        "agenda_url",
+        "minutes_html_url",
+        "minutes_pdf_url",
+        "cancelled",
+        "video_url",
+    ]
+
+    # all_meeting_types = list(set(df["meeting_type"]))
+    # with open("generated_data/all_meeting_types.json", "w") as f:
+    #     json.dump(all_meeting_types, f)
+
+    return df[cols_of_interest]
+
+
 def main(
-        input_fpath: str = "../playwright_output/output.txt",
-        output_fpath: str = "generated_data/playwright_data.json"
+        input_fpath = "../playwright_output/output.txt",
+        output_fpath = "generated_data/all_data_flat.json"
     ):
     """
     This takes the scraped playwright data as input and writes the meeting
@@ -99,14 +172,15 @@ def main(
     with open(input_fpath, "r") as f_in:
         html = f_in.read()
         meeting_list = parse_playwright_output(html)
-        with open(output_fpath, "w") as f_out:
-            json.dump(meeting_list, f_out)
+
+        flat_data_df = assemble_dataframe_and_save(meeting_list)
+        flat_data_df.to_json(output_fpath, orient="records")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", help="input playwright file fpath")
-    parser.add_argument("--output", help="output data file fpath")
+    parser.add_argument("--output", help="output all_data_flat.json fpath")
     args = parser.parse_args()
     if not args.input or not args.output:
         raise Exception("Both input and output are required")
