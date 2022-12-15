@@ -31,7 +31,7 @@ def get_fill_minutes_fname(minutes_dir):
 
 def main(
     flat_data_fpath = "generated_data/all_data_flat.json",
-    minutes_dir = "minutes_new",
+    minutes_dir = "minutes",
     output_fpath = "generated_data/all_meeting_data.json"
     ):
     with open(flat_data_fpath, "r") as f:
