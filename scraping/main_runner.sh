@@ -20,5 +20,3 @@ python generate_all_meeting_data.py \
     --flat_data_fpath_input generated_data/all_data_flat.json \
     --minutes_dir_input minutes \
     --output_fpath generated_data/all_meeting_data.json
-
-# need something to generate meeting_type_dict.json as well 

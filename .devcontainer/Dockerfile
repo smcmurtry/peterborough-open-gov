@@ -4,6 +4,7 @@ FROM mcr.microsoft.com/vscode/devcontainers/python:0-3.9
 RUN apt-get update \
     && apt-get -y install --no-install-recommends apt-utils 2>&1 \
     && apt-get -y install \
+    awscli \
     curl \
     emacs \
     exa \
