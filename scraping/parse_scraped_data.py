@@ -5,16 +5,8 @@ import json
 from urllib.parse import parse_qs
 from urllib import parse
 import pandas as pd
-from typing import List, TypedDict
-
-url = "https://www.peterborough.ca/en/city-hall/upcoming-and-past-agendas.aspx"
-
-# meetings_url = "https://pub-peterborough.escribemeetings.com/meetingscalendarview.aspx?FillWidth=1&wmode=transparent&Year=2021"
-meetings_url = "https://pub-peterborough.escribemeetings.com/meetingscalendarview.aspx?FillWidth=1&wmode=transparent"
-post_url_2 = "https://pub-peterborough.escribemeetings.com/MeetingsCalendarView.aspx/PastMeetings?FillWidth=1&wmode=transparent&Year=2021&Expanded=Airport%20Strategic%20Initiatives%20Committee"
-
-# So I need to find the links like `post_url_2` above in the `meetings_page`. And then do a post request and that should
-# give me the list of urls for the minutes, agendas, videos, etc.
+from typing import List
+from my_types import Link, Meeting
 
 
 def parse_meeting_date(datetime_str: str) -> str:
@@ -22,20 +14,6 @@ def parse_meeting_date(datetime_str: str) -> str:
     string_format = "%A, %B %d, %Y @ %I:%M %p"
     parsed = datetime.strptime(datetime_str, string_format)
     return parsed.isoformat()
-
-
-class Link(TypedDict):
-    aria_label: str
-    link_text: str
-    href: str
-    url: str
-
-
-class Meeting(TypedDict):
-    datetime_iso: str
-    meeting_type: str
-    location: str
-    links: List[Link]
 
 
 def parse_link_soup(link_soup) -> Link:
@@ -63,21 +41,6 @@ def parse_meeting_soup(meeting_soup) -> Meeting:
         link = parse_link_soup(link_soup)
         meeting["links"].append(link)
     return meeting
-
-
-def parse_meeting_page_text(meeting_page_text) -> List[Meeting]:
-    soup = BeautifulSoup(meeting_page_text, "html.parser")
-    past_meeting_soup = soup.find("div", {"class": "past-meetings"})
-    if not past_meeting_soup:
-        return []
-    all_meetings_of_type_2021 = past_meeting_soup.find_all(
-        "div", {"class": "meeting-header"}
-    )
-    parsed_meetings = []
-    for meeting_soup in all_meetings_of_type_2021:
-        meeting = parse_meeting_soup(meeting_soup)
-        parsed_meetings.append(meeting)
-    return parsed_meetings
 
 
 def parse_playwright_output(playwright_output) -> List[Meeting]:
