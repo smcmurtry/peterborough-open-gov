@@ -7,6 +7,7 @@ from urllib import parse
 import pandas as pd
 from typing import List
 from my_types import Link, Meeting
+import os
 
 
 def parse_meeting_date(datetime_str: str) -> str:
@@ -124,27 +125,40 @@ def assemble_dataframe_and_save(all_data):
     return df[cols_of_interest]
 
 
+def get_unique_meetings(non_unique_meetings: List[Meeting]) -> List[Meeting]:
+    _meeting_dict = {}
+    for meeting in non_unique_meetings:
+        key = f"{meeting['meeting_type']}-{meeting['datetime_iso']}"
+        _meeting_dict[key] = meeting
+    return list(_meeting_dict.values())
+
+
 def main(
-        input_fpath = "../playwright_output/output.txt",
+        input_dir = "../playwright_output",
         output_fpath = "generated_data/all_data_flat.json"
     ):
     """
     This takes the scraped playwright data as input and writes the meeting
     data to file. The meeting data is of type: List[Meeting]
     """
-    with open(input_fpath, "r") as f_in:
-        html = f_in.read()
-        meeting_list = parse_playwright_output(html)
-
-        flat_data_df = assemble_dataframe_and_save(meeting_list)
-        flat_data_df.to_json(output_fpath, orient="records")
+    output_fnames = os.listdir(input_dir)
+    meeting_list: List[Meeting] = []
+    for n, output_fname in enumerate(output_fnames):
+        with open(f"{input_dir}/{output_fname}", "r") as f_in:
+            html = f_in.read()
+            _meeting_list = parse_playwright_output(html)
+            meeting_list += _meeting_list
+    
+    unique_meeting_list = get_unique_meetings(meeting_list)
+    flat_data_df = assemble_dataframe_and_save(unique_meeting_list)
+    flat_data_df.to_json(output_fpath, orient="records")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input_fpath", help="input playwright file fpath")
+    parser.add_argument("--input_dir", help="input playwright dir")
     parser.add_argument("--output_fpath", help="output all_data_flat.json fpath")
     args = parser.parse_args()
-    if not args.input_fpath or not args.output_fpath:
+    if not args.input_dir or not args.output_fpath:
         raise Exception("All arguements are required")
-    main(input_fpath=args.input_fpath, output_fpath=args.output_fpath)
+    main(input_dir=args.input_dir, output_fpath=args.output_fpath)

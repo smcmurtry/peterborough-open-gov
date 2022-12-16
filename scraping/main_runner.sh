@@ -1,7 +1,7 @@
 #!/bin/bash
 
 python parse_scraped_data.py \
-    --input_fpath ../playwright_output/output.txt \
+    --input_fpath ../playwright_output \
     --output_fpath generated_data/all_data_flat.json
 
 python save_agendas.py \

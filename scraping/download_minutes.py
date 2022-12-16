@@ -9,8 +9,6 @@ import time
 def main(agenda_input_dir="scraping/agenda", minutes_output_dir="scraping/minutes"):
     agenda_fnames = os.listdir(agenda_input_dir)
 
-    f = open(f"{agenda_input_dir}/{agenda_fnames[-20]}", "r")
-
     for n, agenda_fname in enumerate(agenda_fnames):
         print(n, end=", ")
         meeting_type_str = agenda_fname.split(".")[1]
