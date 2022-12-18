@@ -1,6 +1,12 @@
-# using a debian-based image because the alpine images takes 
+# using a debian-based image because the alpine image takes 
 # forever to build pandas
 FROM python:3.9-slim-buster
+
+# runtime dependencies
+RUN set -eux; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		awscli
 
 WORKDIR /peterborough-open-gov
 COPY . /peterborough-open-gov
