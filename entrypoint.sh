@@ -7,20 +7,12 @@ set -ex
 # tools and the filesystem mount enabled should be located here. 
 ###################################################################
 
-# Define aliases
-echo -e "\n\n# User's Aliases" >> ~/.zshrc
-echo -e "alias fd=fdfind" >> ~/.zshrc
-echo -e "alias l='ls -al --color'" >> ~/.zshrc
-echo -e "alias ls='exa'" >> ~/.zshrc
-echo -e "alias l='exa -alh'" >> ~/.zshrc
-echo -e "alias ll='exa -alh@ --git'" >> ~/.zshrc
-echo -e "alias lt='exa -al -T -L 2'" >> ~/.zshrc
-
 # Warm up git index prior to display status in prompt else it will 
 # be quite slow on every invocation of starship.
 git status
 
 pip install -r requirements.txt
+
 cd scraping
 ./main_runner.sh
 ./sync_to_s3.sh

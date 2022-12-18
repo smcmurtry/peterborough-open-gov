@@ -18,6 +18,9 @@ RUN apk add --no-cache \
     nodejs \ 
     make     
 
+WORKDIR /peterborough-open-gov
+COPY . /peterborough-open-gov
+
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
 ARG AWS_DEFAULT_REGION
@@ -30,6 +33,6 @@ ENV CITY_COUNCIL_SCRAPER_S3_BUCKET ${CITY_COUNCIL_SCRAPER_S3_BUCKET}
 # Upgrade pip
 RUN pip install --upgrade pip
 
-COPY ci/scripts/entrypoint.sh /usr/local/bin/
+COPY entrypoint.sh /peterborough-open-gov/ci/entrypoint.sh
 
-EXPOSE 5000
+ENTRYPOINT ["/peterborough-open-gov/ci/entrypoint.sh"]

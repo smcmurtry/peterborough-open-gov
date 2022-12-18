@@ -20,4 +20,4 @@ echo -e "alias lt='exa -al -T -L 2'" >> ~/.zshrc
 # be quite slow on every invocation of starship.
 git status
 
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
