@@ -1,22 +1,6 @@
-FROM python:3.9-alpine3.13
-
-RUN apk add --no-cache \
-    autoconf \
-    automake \
-    bash \
-    build-base \
-    cmake \
-    g++ \
-    git \
-    libexecinfo-dev \
-    libffi-dev \
-    libtool \
-    libxml2-dev \
-    libxslt-dev \    
-    nodejs \
-    npm \    
-    nodejs \ 
-    make     
+# using a debian-based image because the alpine images takes 
+# forever to build pandas
+FROM python:3.9-slim-buster
 
 WORKDIR /peterborough-open-gov
 COPY . /peterborough-open-gov

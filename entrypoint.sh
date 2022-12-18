@@ -9,7 +9,6 @@ set -ex
 
 # Warm up git index prior to display status in prompt else it will 
 # be quite slow on every invocation of starship.
-git status
 
 pip install -r requirements.txt
 
