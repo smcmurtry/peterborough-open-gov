@@ -21,3 +21,6 @@ echo -e "alias lt='exa -al -T -L 2'" >> ~/.zshrc
 git status
 
 pip install -r requirements.txt
+cd scraping
+./main_runner.sh
+./sync_to_s3.sh
