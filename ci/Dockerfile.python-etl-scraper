@@ -23,6 +23,6 @@ ENV CITY_COUNCIL_SCRAPER_S3_BUCKET ${CITY_COUNCIL_SCRAPER_S3_BUCKET}
 # Upgrade pip
 RUN pip install --upgrade pip
 
-COPY python-etl-scraping/entrypoint.sh /peterborough-open-gov/ci/entrypoint.sh
+COPY python-etl-scraper/entrypoint.sh /peterborough-open-gov/ci/entrypoint.sh
 
 ENTRYPOINT ["/peterborough-open-gov/ci/entrypoint.sh"]

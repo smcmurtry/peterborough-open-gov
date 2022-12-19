@@ -1,4 +1,4 @@
-name: Run scraper
+name: Run python-etl-scraper
 on:
   # push:
   schedule:
@@ -23,8 +23,8 @@ jobs:
           --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
           --build-arg AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} \
           --build-arg CITY_COUNCIL_SCRAPER_S3_BUCKET=${CITY_COUNCIL_SCRAPER_S3_BUCKET} \
-          -t etl-and-scrape . \
-          -f ci/Dockerfile
+          -t python-etl-scraper . \
+          -f ci/Dockerfile.python-etl-scraper
 
       - name: Run scraper
-        run: docker run etl-and-scrape
+        run: docker run python-etl-scraper

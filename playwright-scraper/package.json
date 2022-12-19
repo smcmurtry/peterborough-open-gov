@@ -1,0 +1,15 @@
+{
+  "name": "city-council-scraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@playwright/test": "^1.27.1",
+    "fs": "^0.0.1-security",
+    "run": "^1.4.0"
+  }
+}
