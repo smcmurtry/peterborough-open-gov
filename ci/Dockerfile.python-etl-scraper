@@ -8,8 +8,8 @@ RUN set -eux; \
 	apt-get install -y --no-install-recommends \
 		awscli
 
-WORKDIR /peterborough-open-gov
-COPY . /peterborough-open-gov
+WORKDIR /peterborough-open-gov/python-etl-scraper
+COPY . /peterborough-open-gov/python-etl-scraper
 
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
@@ -23,6 +23,6 @@ ENV CITY_COUNCIL_SCRAPER_S3_BUCKET ${CITY_COUNCIL_SCRAPER_S3_BUCKET}
 # Upgrade pip
 RUN pip install --upgrade pip
 
-COPY python-etl-scraper/entrypoint.sh /peterborough-open-gov/ci/entrypoint.sh
+COPY entrypoint.sh /peterborough-open-gov/ci/entrypoint.sh
 
 ENTRYPOINT ["/peterborough-open-gov/ci/entrypoint.sh"]

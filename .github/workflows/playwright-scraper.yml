@@ -32,5 +32,5 @@ jobs:
       # - name: Auto commit data
       #   uses: stefanzweifel/git-auto-commit-action@v4
       #   with:
-      #     repository: peteroborough-open-gov
+      #     repository: peterborough-open-gov
       #     commit_message: Auto commit data
