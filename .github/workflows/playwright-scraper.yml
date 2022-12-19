@@ -1,6 +1,6 @@
 name: Run playwright-scraper
 on:
-  # push:
+  push:
   schedule:
     # trigger every day at 9am ET, noon UTC
     - cron:  '0 12 * * *'
