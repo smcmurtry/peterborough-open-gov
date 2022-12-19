@@ -20,6 +20,6 @@ ENV AWS_SECRET_ACCESS_KEY ${AWS_SECRET_ACCESS_KEY}
 ENV AWS_DEFAULT_REGION ${AWS_DEFAULT_REGION}
 ENV CITY_COUNCIL_SCRAPER_S3_BUCKET ${CITY_COUNCIL_SCRAPER_S3_BUCKET}
 
-COPY entrypoint.sh /peterborough-open-gov/ci/entrypoint.sh
+COPY playwright-scraper/entrypoint.sh /peterborough-open-gov/ci/entrypoint.sh
 
 ENTRYPOINT ["/peterborough-open-gov/ci/entrypoint.sh"]
