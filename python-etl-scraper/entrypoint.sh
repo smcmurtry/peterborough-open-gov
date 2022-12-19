@@ -7,8 +7,7 @@ set -ex
 # tools and the filesystem mount enabled should be located here. 
 ###################################################################
 
-# Warm up git index prior to display status in prompt else it will 
-# be quite slow on every invocation of starship.
+cd python-etl-scraper
 
 pip install -r requirements.txt
 
