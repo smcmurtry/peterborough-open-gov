@@ -1,6 +1,6 @@
 name: Run python-etl-scraper
 on:
-  push:
+  # push:
   schedule:
     # trigger every day at 13 UTC
     - cron:  '0 13 * * *'
