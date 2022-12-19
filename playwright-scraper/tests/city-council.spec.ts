@@ -7,10 +7,6 @@ function delay(time) {
     });
 }
 
-var logger = fs.createWriteStream('output/output.txt', {
-    // flags: 'a' // 'a' means appending (old data will be preserved)
-})
-
 test('test', async ({ page }) => {
     // full history
     // await page.goto('https://pub-peterborough.escribemeetings.com/meetingscalendarview.aspx?FillWidth=1&wmode=transparent');
