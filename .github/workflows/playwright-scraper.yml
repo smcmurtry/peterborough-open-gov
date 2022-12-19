@@ -1,6 +1,6 @@
 name: Run playwright-scraper
 on:
-  push:
+  # push:
   schedule:
     # trigger every day at 9am ET, noon UTC
     - cron:  '0 12 * * *'
@@ -28,9 +28,3 @@ jobs:
 
       - name: Run scraper
         run: docker run playwright-scraper
-
-      # - name: Auto commit data
-      #   uses: stefanzweifel/git-auto-commit-action@v4
-      #   with:
-      #     repository: peterborough-open-gov
-      #     commit_message: Auto commit data

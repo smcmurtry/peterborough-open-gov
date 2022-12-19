@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 import * as fs from 'fs';
 
 function delay(time) {
@@ -32,5 +32,4 @@ test('test', async ({ page }) => {
         var pastMeetingHtml = await pastMeetingLocator.innerHTML()
         logger.write(pastMeetingHtml);
     }
-
 });
