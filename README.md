@@ -22,6 +22,6 @@ npx playwright test tests/city-council.spec.ts --headed
 
 To parse the scraped data and download the pdfs, start the dev container and then run:
 ```
-cd scraping
+cd python-etl-scraping
 ```
 

@@ -12,6 +12,6 @@ set -ex
 
 pip install -r requirements.txt
 
-cd scraping
+cd python-etl-scraping
 ./main_runner.sh
 ./sync_to_s3.sh
