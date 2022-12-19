@@ -5,7 +5,7 @@
 ## To build docker container
 
 ```sh
-docker build -t city-council-scraper .
+docker build -t playwright-scraper .
 ```
 
 ### To push a new image to amazon ECR
@@ -16,5 +16,5 @@ login to AWS console, go to AWS ECR, follow the "push commands" steps
 ## To run the playwright scraper
 
 ```sh
-docker run city-council-scraper
+docker run playwright-scraper
 ```
