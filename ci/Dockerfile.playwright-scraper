@@ -8,7 +8,7 @@ RUN apt-get update \
     git \
     awscli
 
-WORKDIR /peterborough-open-gov/playwright-scraper
+WORKDIR /peterborough-open-gov
 COPY . /peterborough-open-gov
 
 ARG AWS_ACCESS_KEY_ID
