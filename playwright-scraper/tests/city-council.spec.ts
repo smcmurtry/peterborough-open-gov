@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 import * as fs from 'fs';
 
 function delay(time) {
@@ -6,10 +6,6 @@ function delay(time) {
         setTimeout(resolve, time)
     });
 }
-
-var logger = fs.createWriteStream('output/output.txt', {
-    // flags: 'a' // 'a' means appending (old data will be preserved)
-})
 
 test('test', async ({ page }) => {
     // full history
@@ -36,5 +32,4 @@ test('test', async ({ page }) => {
         var pastMeetingHtml = await pastMeetingLocator.innerHTML()
         logger.write(pastMeetingHtml);
     }
-
 });

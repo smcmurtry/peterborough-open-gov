@@ -1,6 +1,14 @@
 #!/bin/sh
 set -e -x
 
+cd playwright-scraper
+
+# Install dependencies
+npm install
+
+# Install browsers
+npx playwright install --with-deps chromium
+
 # Run playwright test
 npx playwright test tests/city-council.spec.ts
 

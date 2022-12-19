@@ -2,7 +2,7 @@ name: Run playwright-scraper
 on:
   # push:
   schedule:
-    # trigger every day at 9am ET, noon UTC
+    # trigger every day noon UTC
     - cron:  '0 12 * * *'
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -28,9 +28,3 @@ jobs:
 
       - name: Run scraper
         run: docker run playwright-scraper
-
-      # - name: Auto commit data
-      #   uses: stefanzweifel/git-auto-commit-action@v4
-      #   with:
-      #     repository: city-council-scraper
-      #     commit_message: Auto commit data

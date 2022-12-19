@@ -7,11 +7,18 @@ set -ex
 # tools and the filesystem mount enabled should be located here. 
 ###################################################################
 
-# Warm up git index prior to display status in prompt else it will 
-# be quite slow on every invocation of starship.
+cd python-etl-scraper
 
 pip install -r requirements.txt
 
-cd python-etl-scraper
+# these commands were used to do the initial population of the s3 folder
+# aws s3 cp ../playwright-output/output.2022.txt s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/playwright-output/
+# aws s3 cp ../playwright-output/output.historical.txt s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/playwright-output/
+
+# get latest playwright output
+aws s3 sync s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/playwright-output ../playwright-output 
+
 ./main_runner.sh
-./sync_to_s3.sh
+
+aws s3 sync minutes s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/minutes
+aws s3 cp generated_data/all_meeting_data.json s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/
