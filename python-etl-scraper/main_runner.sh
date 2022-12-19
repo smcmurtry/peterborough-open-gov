@@ -2,7 +2,7 @@
 
 echo "Parsing scraped data"
 python parse_scraped_data.py \
-    --input_dir ../playwright_output \
+    --input_dir ../playwright-output \
     --output_fpath generated_data/all_data_flat.json
 
 echo "Saving agendas"

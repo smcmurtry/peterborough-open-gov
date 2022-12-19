@@ -1,0 +1,36 @@
+name: Run playwright-scraper
+on:
+  # push:
+  schedule:
+    # trigger every day at 9am ET, noon UTC
+    - cron:  '0 12 * * *'
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+  CITY_COUNCIL_SCRAPER_S3_BUCKET: ${{ secrets.CITY_COUNCIL_SCRAPER_S3_BUCKET }}
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Build container
+        run: |
+          docker build \
+          --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+          --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+          --build-arg AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION} \
+          --build-arg CITY_COUNCIL_SCRAPER_S3_BUCKET=${CITY_COUNCIL_SCRAPER_S3_BUCKET} \
+          -t playwright-scraper . \
+          -f ci/Dockerfile.playwright-scraper
+
+      - name: Run scraper
+        run: docker run playwright-scraper
+
+      # - name: Auto commit data
+      #   uses: stefanzweifel/git-auto-commit-action@v4
+      #   with:
+      #     repository: city-council-scraper
+      #     commit_message: Auto commit data

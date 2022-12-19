@@ -6,7 +6,7 @@ import requests
 import time
 
 
-def main(agenda_input_dir="scraping/agenda", minutes_output_dir="scraping/minutes"):
+def main(agenda_input_dir="python-etl-scraper/agenda", minutes_output_dir="python-etl-scraper/minutes"):
     agenda_fnames = os.listdir(agenda_input_dir)
 
     for n, agenda_fname in enumerate(agenda_fnames):
