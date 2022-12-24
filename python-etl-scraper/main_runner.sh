@@ -20,3 +20,9 @@ python generate_all_meeting_data.py \
     --flat_data_fpath_input generated_data/all_data_flat.json \
     --minutes_dir_input minutes \
     --output_fpath generated_data/all_meeting_data.json
+
+# I need to add some more code to run all pdfs after a certain date through the
+# following program. Then probably another function to compile all the
+# vote data files into one file
+# echo "Extracting vote data"
+# python extract_vote_data.py --minutes_fpath minutes/2022-12-06.City-Council-Meeting.pdf --output_fpath votes/2022-12-06.City-Council-Meeting.json
