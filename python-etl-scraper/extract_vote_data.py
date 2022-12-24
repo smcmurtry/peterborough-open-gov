@@ -1,6 +1,10 @@
 import argparse
 import fitz
 import json
+import os
+
+# this is around when the city started recording votes in the minutes
+VOTE_RECORDING_START_DATE = "2021-11-29"
 
 def get_lines_from_doc(doc):
     lines = []
@@ -26,7 +30,6 @@ def get_vote_data_from_lines(lines):
     against_open = False
     for n, x in enumerate(lines):
         first_word = x["text"].split(" ")[0].lower()
-        # 
         vote_data_in_progress = "title" in vote_obj.keys()
         if first_word in ["carried", "lost"] and vote_data_in_progress:
             for_open = False
@@ -102,7 +105,7 @@ def clean_data(votes):
     return votes
 
 
-def main(
+def save_vote_data(
         minutes_fpath="../minutes/2022-12-06.City-Council-Meeting.pdf",
         output_fpath="../votes/2022-12-06.City-Council-Meeting.json"
     ):
@@ -113,11 +116,28 @@ def main(
     with open(output_fpath, "w") as f:
         json.dump(votes, f)
 
+
+def main(
+    minutes_input_dir="../minutes",
+    votes_output_dir="../votes"
+):
+    minutes_fnames = os.listdir(minutes_input_dir)
+    for n, minutes_fname in enumerate(minutes_fnames):
+        print(n, end=", ")
+        votes_fname = ".".join(minutes_fname.split(".")[:-1] + ["json"])
+        date = minutes_fname.split(".")[0]
+        if date < VOTE_RECORDING_START_DATE:
+            continue
+        save_vote_data(
+            f"{minutes_input_dir}/{minutes_fname}", 
+            f"{votes_output_dir}/{votes_fname}"
+        )
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--minutes_fpath", help="fpath to minutes pdf file")
-    parser.add_argument("--output_fpath", help="fpath to output votes json file")
+    parser.add_argument("--minutes_input_dir", help="path to minutes directory")
+    parser.add_argument("--votes_output_dir", help="path to output votes directory")
     args = parser.parse_args()
-    if not args.minutes_fpath or not args.output_fpath:
+    if not args.minutes_input_dir or not args.votes_output_dir:
         raise Exception("All arguments are required")
-    main(args.minutes_fpath, args.output_fpath)
+    main(args.minutes_input_dir, args.votes_output_dir)
