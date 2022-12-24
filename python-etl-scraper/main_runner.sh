@@ -26,3 +26,6 @@ python generate_all_meeting_data.py \
 # vote data files into one file
 echo "Extracting vote data"
 python extract_vote_data.py --minutes_input_dir minutes --votes_output_dir votes
+
+echo "Compiling vote data"
+python compile_vote_data.py --votes_input_dir votes --votes_output_fpath generated_data/all_vote_data.json

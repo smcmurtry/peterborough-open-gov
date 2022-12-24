@@ -105,10 +105,7 @@ def clean_data(votes):
     return votes
 
 
-def save_vote_data(
-        minutes_fpath="../minutes/2022-12-06.City-Council-Meeting.pdf",
-        output_fpath="../votes/2022-12-06.City-Council-Meeting.json"
-    ):
+def save_vote_data(minutes_fpath, output_fpath):
     doc = fitz.open(minutes_fpath)
     lines = get_lines_from_doc(doc)
     _votes = get_vote_data_from_lines(lines)
@@ -118,8 +115,8 @@ def save_vote_data(
 
 
 def main(
-    minutes_input_dir="../minutes",
-    votes_output_dir="../votes"
+    minutes_input_dir="minutes",
+    votes_output_dir="votes"
 ):
     minutes_fnames = os.listdir(minutes_input_dir)
     for n, minutes_fname in enumerate(minutes_fnames):

@@ -160,5 +160,5 @@ if __name__ == "__main__":
     parser.add_argument("--output_fpath", help="output all_data_flat.json fpath")
     args = parser.parse_args()
     if not args.input_dir or not args.output_fpath:
-        raise Exception("All arguements are required")
+        raise Exception("All arguments are required")
     main(input_dir=args.input_dir, output_fpath=args.output_fpath)

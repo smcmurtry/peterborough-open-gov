@@ -75,6 +75,6 @@ if __name__ == "__main__":
     parser.add_argument("--minutes_output_dir", help="output directory containing minutes pdfs")
     args = parser.parse_args()
     if not args.agenda_input_dir or not args.minutes_output_dir:
-        raise Exception("All arguements are required")
+        raise Exception("All arguments are required")
 
     main(agenda_input_dir=args.agenda_input_dir, minutes_output_dir=args.minutes_output_dir)

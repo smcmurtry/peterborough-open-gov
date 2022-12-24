@@ -39,5 +39,5 @@ if __name__ == "__main__":
     parser.add_argument("--agenda_output_dir", help="output directory for agendas")
     args = parser.parse_args()
     if not args.flat_data_fpath or not args.agenda_output_dir:
-        raise Exception("All arguements are required")
+        raise Exception("All arguments are required")
     main(flat_data_fpath=args.flat_data_fpath, agenda_output_dir=args.agenda_output_dir)
