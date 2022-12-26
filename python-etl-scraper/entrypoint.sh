@@ -22,3 +22,4 @@ aws s3 sync s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/playwright-output ../playwrig
 
 aws s3 sync minutes s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/minutes
 aws s3 cp generated_data/all_meeting_data.json s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/
+aws s3 cp generated_data/all_vote_data.json s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/
