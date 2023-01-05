@@ -11,8 +11,8 @@ test('test', async ({ page }) => {
     // full history
     // await page.goto('https://pub-peterborough.escribemeetings.com/meetingscalendarview.aspx?FillWidth=1&wmode=transparent');
 
-    // just for 2022
-    await page.goto('https://pub-peterborough.escribemeetings.com/meetingscalendarview.aspx?FillWidth=1&wmode=transparent&Year=2022');
+    // just for 2023
+    await page.goto('https://pub-peterborough.escribemeetings.com/meetingscalendarview.aspx?FillWidth=1&wmode=transparent&Year=2023');
     
     delay(5000)
     var pastMeetingLocator = page.locator(".past-meetings")
