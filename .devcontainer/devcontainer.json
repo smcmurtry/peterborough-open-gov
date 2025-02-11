@@ -1,0 +1,16 @@
+{
+    "name": "Python Development",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance"
+            ]
+        }
+    },
+    "postCreateCommand": "bash .devcontainer/install.sh",
+    "remoteUser": "vscode"
+}
