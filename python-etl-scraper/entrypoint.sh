@@ -9,17 +9,19 @@ set -ex
 
 cd python-etl-scraper
 
+pip install --upgrade pip
 pip install -r requirements.txt
+# pip install -r requirements-dev.txt
 
 # these commands were used to do the initial population of the s3 folder
 # aws s3 cp ../playwright-output/output.2022.txt s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/playwright-output/
 # aws s3 cp ../playwright-output/output.historical.txt s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/playwright-output/
 
 # get latest playwright output
-aws s3 sync s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/playwright-output ../playwright-output 
+# aws s3 sync s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/playwright-output ../playwright-output 
 
 ./main_runner.sh
 
-aws s3 sync minutes s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/minutes
-aws s3 cp generated_data/all_meeting_data.json s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/
-aws s3 cp generated_data/all_vote_data.json s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/
+# aws s3 sync minutes s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/minutes
+# aws s3 cp generated_data/all_meeting_data.json s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/
+# aws s3 cp generated_data/all_vote_data.json s3://${CITY_COUNCIL_SCRAPER_S3_BUCKET}/
