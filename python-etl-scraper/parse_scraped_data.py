@@ -8,6 +8,7 @@ import pandas as pd
 from typing import List
 from my_types import Link, Meeting
 import os
+import uuid
 
 
 def parse_meeting_date(datetime_str: str) -> str:
@@ -87,7 +88,7 @@ def get_id(url: str) -> str:
     if "Id" not in query_dict:
         # these seem to be urls for cancellation notices
         # @todo: fix my scraping program since cancelled meetings should still have agendas
-        return "blah"
+        return str(uuid.uuid4())
     return query_dict["Id"][0]
 
 
