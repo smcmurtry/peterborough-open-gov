@@ -96,7 +96,7 @@ soupsieve==2.3.2.post1
 SpeechRecognition==3.8.1
 stack-data==0.5.1
 terminado==0.16.0
-textract==1.6.5
+# textract==1.6.5
 tinycss2==1.1.1
 tomli==2.0.1
 tornado==6.2
