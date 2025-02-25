@@ -1,5 +1,5 @@
 import argparse
-import fitz
+import pymupdf
 import json
 import os
 
@@ -106,7 +106,7 @@ def clean_data(votes):
 
 
 def save_vote_data(minutes_fpath, output_fpath):
-    doc = fitz.open(minutes_fpath)
+    doc = pymupdf.open(minutes_fpath)
     lines = get_lines_from_doc(doc)
     _votes = get_vote_data_from_lines(lines)
     votes = clean_data(_votes)

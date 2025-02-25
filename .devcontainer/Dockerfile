@@ -4,7 +4,11 @@ FROM mcr.microsoft.com/devcontainers/python:3.9
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		awscli
+		awscli \
+		mupdf \
+		mupdf-tools \
+		python3-dev \
+		build-essential
 
 WORKDIR /workspaces/peterborough-open-gov
 

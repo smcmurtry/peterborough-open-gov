@@ -7,4 +7,4 @@ fastjsonschema
 pandas
 requests
 urllib3
-fitz
+pymupdf
