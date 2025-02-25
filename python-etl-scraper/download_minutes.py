@@ -29,7 +29,12 @@ def download_minutes_from_agenda(agenda_input_dir, agenda_fname, minutes_output_
                 possible_date = a.text.split(" - ")[1].split(" ")[-1]
                 date = datetime.strptime(possible_date, "%m-%d-%Y")
             except:
-                continue
+                try:
+                    # filename like "06-03-2024 - Special Council Minutes.pdf"
+                    possible_date = a.text.split(" - ")[0]
+                    date = datetime.strptime(possible_date, "%m-%d-%Y")
+                except:
+                    continue
         else:
             possible_date = a.text[:10]
             if possible_date.count("-") != 2:
